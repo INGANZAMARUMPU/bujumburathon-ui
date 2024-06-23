@@ -3,7 +3,6 @@
   <div class="component">
     <h1 class="title">INGANZAMARUMPU</h1>
     <div class="options">
-      <span class="pi pi-logout" style="font-size: 10px"></span>
       <h1 class="close" @click="logout">
       </h1>
     </div>
@@ -16,7 +15,7 @@
 export default {
   methods:{
     logout(){
-      if(window.confirm("Voulez-vous vraiment voudeconnecter?")){
+      if(window.confirm("Voulez-vous vraiment vous deconnecter?")){
         this.$store.state.user = null
       }
     }

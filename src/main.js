@@ -2,7 +2,6 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import store from './store'
 import axios from 'axios'
-import 'primeicons/primeicons.css'
 
 window.axios = axios;
 const app = createApp(App).use(store)
@@ -73,7 +72,7 @@ app.mixin({
   },
   computed:{
     user(){
-    	return this.$store.state.user.user;
+    	return this.$store.state.user;
     },
     url(){
       return this.$store.state.url;
