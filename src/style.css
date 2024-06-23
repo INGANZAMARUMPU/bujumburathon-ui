@@ -41,14 +41,14 @@ button, .button{
     text-align: center;
 }
 button:hover, .button:hover{
-  background-color: var(--primary-light);
+    background-color: var(--primary-light);
 }
 button:active, .button:active{
-  background-color: var(--primary);
+    background-color: var(--primary);
 }
 .field > *{
-  display: block;
-  width: 100%;
+    display: block;
+    width: 100%;
 }
 dialog:modal{
     margin: auto;
@@ -86,4 +86,20 @@ dialog form{
 }
 .logs{
     color: red;
+}
+
+table,td, th{
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+th{
+    background-color: #eee;
+}
+
+table.table{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+  
+    
 }
