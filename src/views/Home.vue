@@ -5,19 +5,12 @@
       <img src="/static/ant.webp">
       <div class="camera">
         <div class="top">
-          <div class="title">{{ selected.name||'*hitamwo irobot*' }}</div>
           <div v-if="!!msg">
             <div>new command: <strong>{{ msg }}</strong></div>
           </div>
         </div>
-        <div class="robots">
-         
-        </div>
-      </div>
-    
-      <div>
-        <div>
-          <computer-liste/>
+        <div class="computers">
+          <Computer v-for="computer in computers" :item="computer"/>
         </div>
       </div>
     </div>
@@ -30,17 +23,17 @@
 
 <script>
 import TopBar from '@/components/topbar.vue'
-import Computer from '@/components/robot.vue'
+import Computer from '@/components/computer.vue'
 import DialogButton from '@/components/dialog_button.vue'
-import ComputerListe from '@/components/tables/ComputerListe.vue'
 
 export default {
   components: {
-    TopBar, Computer, DialogButton, ComputerListe  },
+    TopBar, Computer, DialogButton
+  },
   data(){
     return {
       selected:{},
-      robots:[],
+      computers:[],
       buttons:this.$store.state.buttons,
       msg:"",
       button_shown: false,
@@ -48,8 +41,8 @@ export default {
     }
   },
   watch:{
-    "$store.state.buttons"(new_val){
-      this.buttons = new_val
+    "$store.state.user"(new_val){
+      this.fetch_data()
     },
   },
   methods:{
@@ -60,8 +53,15 @@ export default {
     deleteButton(index){
       this.$store.state.buttons.splice(index, 1)
     },
-  },
-  mounted(){
+    fetch_data(){
+      axios.get(this.url + "/serveurs/", this.headers)
+      .then(res => {
+        this.computers = res.data
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+    }
   }
 }
 </script>
@@ -84,10 +84,8 @@ export default {
   font-size: 1.2em;
   font-weight: 800;
 }
-.robots{
+.computers{
   display: flex;
-  flex-direction: row-reverse;
-  flex-wrap: wrap-reverse;
   gap: 5px;
 }
 .buttons{
