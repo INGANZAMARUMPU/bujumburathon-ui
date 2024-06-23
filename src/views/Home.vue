@@ -11,11 +11,13 @@
           </div>
         </div>
         <div class="robots">
-          <Computer
-            v-for="ant in robots" :robot="ant"
-            :selected="selected.id==ant.id"
-            @selected="switchTo(ant)"
-            :key="ant.id"/>
+         
+        </div>
+      </div>
+    
+      <div>
+        <div>
+          <computer-liste/>
         </div>
       </div>
     </div>
@@ -30,11 +32,11 @@
 import TopBar from '@/components/topbar.vue'
 import Computer from '@/components/robot.vue'
 import DialogButton from '@/components/dialog_button.vue'
+import ComputerListe from '@/components/tables/ComputerListe.vue'
 
 export default {
   components: {
-    TopBar, Computer, DialogButton
-  },
+    TopBar, Computer, DialogButton, ComputerListe  },
   data(){
     return {
       selected:{},

@@ -3,10 +3,10 @@ import App from './App.vue'
 import store from './store'
 import axios from 'axios'
 import 'primeicons/primeicons.css'
+import { BootstrapIconsPlugin } from "bootstrap-icons-vue";
 
 window.axios = axios;
-const app = createApp(App).use(store)
-
+const app = createApp(App).use(store).use(BootstrapIconsPlugin)
 app.mixin({
   methods: {
     cleanString(str){
@@ -79,6 +79,7 @@ app.mixin({
       return this.$store.state.url;
     },
     headers(){
+      if(!this.$store.state?.user?.access) return {}
       return {
         headers:{
           "Authorization":"Bearer "+this.$store.state.user.access
