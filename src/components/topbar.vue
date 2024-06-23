@@ -1,16 +1,10 @@
 <template>
 <div>
   <div class="component">
-    <h1 class="title"></h1>
+    <h1 class="title">INGANZAMARUMPU</h1>
     <div class="options">
-      <h1
-        v-if="$store.state.mode=='commander'"
-        @click="$emit('create')">
-        +
-      </h1>
-      <h1 class="close"
-        @click="logout">
-        &times
+      <span class="pi pi-logout" style="font-size: 10px"></span>
+      <h1 class="close" @click="logout">
       </h1>
     </div>
   </div>
@@ -76,18 +70,8 @@ export default {
   color: white;
   cursor: default;
 }
-@media screen and (min-width: 600px) {
-  .title::after{
-    content: "ANT ROBOT COMMANDER V2.0";
-  }
-}
-@media screen and (max-width: 600px) {
-  .title::after{
-    content: "ANT COMMANDER V2.0";
-  }
-}
 @media screen and (max-width: 400px) {
-  .title::after{
+  .title{
     font-size: .8em;
   }
   .component{

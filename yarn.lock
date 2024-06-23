@@ -4505,6 +4505,11 @@
     "lodash" "^4.17.20"
     "renderkid" "^3.0.0"
 
+"primeicons@^7.0.0":
+  "integrity" "sha512-jK3Et9UzwzTsd6tzl2RmwrVY/b8raJ3QZLzoDACj+oTJ0oX7L9Hy+XnVwgo4QVKlKpnP/Ur13SXV/pVh4LzaDw=="
+  "resolved" "https://registry.npmjs.org/primeicons/-/primeicons-7.0.0.tgz"
+  "version" "7.0.0"
+
 "process-nextick-args@~2.0.0":
   "integrity" "sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag=="
   "resolved" "https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-2.0.1.tgz"
