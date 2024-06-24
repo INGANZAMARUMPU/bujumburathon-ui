@@ -2,46 +2,49 @@
   <div id="app">
     <TopBar @create="button_shown=true"/>
     <div class="body">
-      <img src="/static/ant.webp">
-      <div class="camera">
-        <div class="top">
-          <div v-if="!!msg">
-            <div>new command: <strong>{{ msg }}</strong></div>
+      <div class="body_items">
+        <img src="/static/ant.webp">
+        <div class="camera">
+          <div class="top">
+            <div v-if="!!msg">
+              <div>new command: <strong>{{ msg }}</strong></div>
+            </div>
+          </div>
+          <div class="computers">
+            <Computer v-for="computer in computers" :item="computer" 
+            @click="displayInfoPc(computer)" :key="computer.id"/>
           </div>
         </div>
-        <div class="computers">
-          <Computer v-for="computer in computers" :item="computer" 
-          @click="displayInfoPc(computer)" :key="computer.id"/>
-        </div>
-      </div>
-      <div class="main-screen">
-        <div>
-          <div class="info_pc" v-if="current_pc.ip">
-            <h4>Information detail du Machine : {{ current_pc.ip }}
-
-              Serveur No : {{ current_pc.id }}
-            </h4>
+        <div class="main-screen ">
+          <div>
+            <div class="info_pc" v-if="current_pc.ip">
+              <h4>Information detail du Machine : {{ current_pc.ip }}
+                
+                Serveur No : {{ current_pc.id }}
+              </h4>
             </div>
-          <div class="computer_detail">
-            <Ressource
+            <div class="computer_detail">
+              <Ressource
               v-for="obj,i in rsrcs"
               :rsrc_name="i"
               :rsrc_obj="obj"
               :key="obj.id"
-            />
+              />
+            </div>
+          </div>
+          
+          <div class="microvms">
+            <micro-vm-liste :items="microvms" @created="updateMicroVm"/>
           </div>
         </div>
-        
-        <div class="microvms">
-          <micro-vm-liste :items="microvms"/>
-        </div>
       </div>
-    </div>
-    
-    <DialogButton
+      
+      <DialogButton
       :item="current_button"
       @close="closeDialogs"
       v-show="button_shown"/>
+    </div>
+    
   </div>
 </template>
 
@@ -80,6 +83,11 @@ export default {
     },
   },
   methods:{
+    updateMicroVm(e){
+      alert("Finish")
+      //this.microvms.push(e);
+      this.fetch_data()
+    },
     editButton(button){
       this.current_button = button
       this.button_shown = true
@@ -89,6 +97,7 @@ export default {
     },
     displayInfoPc(computer){
       this.current_pc = computer
+      this.$store.state.current_pc =computer
       let url = `http://${computer.ip}:8000/micro_vms/resources_monitor/`
       let vue = this
       if(!!this.interval){
@@ -117,8 +126,8 @@ export default {
       .catch(err => {
         console.error(err); 
       })
-
-
+      
+      
     }
   }
 }
@@ -145,7 +154,20 @@ export default {
   position: relative;
   height: calc(100% - 200px);
 }
+
+.body_items{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
 .camera{
+  position: absolute;
+  height: 170px;
+  top: 60px;
   background-color: #59d;
   color: white;
   padding: 20px;
@@ -164,6 +186,8 @@ export default {
   display: flex;
   gap: 5px;
 }
+
+
 .buttons{
   flex-grow: 1;
   max-width: 49%;
@@ -185,5 +209,28 @@ img{
 .computer_detail{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+}
+
+.microvms{
+  position: absolute;
+  top: 240px;
+  right: 0;
+  height: calc(100% - 240px);
+  overflow: auto;
+}
+.computer_detail{
+  position: absolute;
+  top: 270px;
+  left: 0;
+  height: calc(100% - 270px);
+  overflow: auto;
+}
+
+.info_pc{
+  position: absolute;
+  top: 240px;
+  left: 0;
+  height:20px;
+  overflow: auto;
 }
 </style>

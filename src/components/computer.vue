@@ -32,5 +32,9 @@ export default {
   padding: 10px;
 }
 
+.computer:hover{
+  box-shadow: 5px 5px 10px;
+  cursor: pointer;
+}
 
 </style>

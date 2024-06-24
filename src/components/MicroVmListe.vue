@@ -7,6 +7,9 @@
                 <b-icon-plus style="size: 24px;" />
                 Creer un Micro VM</button>
         </div>
+        <div v-if="loader">
+            <h1>Loading</h1>
+        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -23,7 +26,6 @@
                 <tr v-for="item in items" :key="item.id">
                     <td>{{ item.id }}</td>
                     <td>{{ item.nom }}</td>
-                  
                     <td>
                         <b-icon-pc-display/>
                         {{ item.ip }}</td>
@@ -32,7 +34,6 @@
                         {{ item.serveur.ip }}
                         <span v-if="item.serveur.online" class="online"></span>
                         <span v-else class="offline"></span>
-                
                     </td>
                     <td>
                         {{  item.date_creation}}
@@ -43,8 +44,10 @@
                         <!-- {{ item.status == 1? "Online" : "Offline" }} -->
                     </td>
                     <td>
-                        <button class="btn btn-primary" @click="startPc(item.id)">Start</button>
-                      
+                        <div class="">
+                            <button class="btn btn-primary" @click="startPc(item.id)">Start</button>
+                            <button class="btn btn-primary" @click="deletePc(item.id)">Delete</button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -67,13 +70,24 @@
             }, 
             createMc(){
                 const machneName = prompt("Entrez le nom de la machine");
-                if(machneName){
-                    axios.post(this.url,{} , this.header)
+                if(machneName && !!this.$store.state.current_pc.id){
+                    this.loader = true;
+                    axios.post(this.url + '/micro-vms/',{
+                        "nom":machneName,
+                        "serveur":this.$store.state.current_pc.id
+                    } , this.header)
                     .then(response=>{
                         console.log(response);
+                        this.$emit('created',  response.data)
+                       
                     }).catch(error=>{
                         console.log(error);
                     })
+                    .finally(()=>{
+                        this.loader = false;
+                    })
+                }else{
+                    alert("Veuillez choisir une machine");
                 }
             }
         }

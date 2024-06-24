@@ -30,13 +30,22 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: absolute;
+  top:0px;
+  background: #fff;
+  width: 100%;
+  z-index: 100;
+  box-shadow: 0 3px 5px  #444;
+  
 }
 .shadow{
   background: rgb(0,0,0);
   background: linear-gradient(180deg, rgba(100,100,100,1) 0%, rgba(120,120,120,1) 10%, rgba(255,255,255,.3) 100%);
   height: 5px;
   width: 100%;
+
   position: absolute;
+  
 }
 .options{
   display: flex;
