@@ -100,7 +100,7 @@ export default {
         }).catch((error) => {
           console.error(error)
         })
-      }, 2000)
+      }, 6000)
     },
     fetch_data(){
       axios.get(this.url + "/serveurs/", this.headers)
