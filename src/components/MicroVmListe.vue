@@ -97,10 +97,12 @@
 <style  scoped>
 
 .display_header{
+    position: obsolute;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
 }
+
 
 </style>

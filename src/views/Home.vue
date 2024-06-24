@@ -11,19 +11,25 @@
             </div>
           </div>
           <div class="computers">
-            <Computer v-for="computer in computers" :item="computer" 
-            @click="displayInfoPc(computer)" :key="computer.id"/>
+            <div v-if="isLoading" class="loadingComputers">
+              Loading
+              <div class="loader"></div>
+            </div>
+            <div    class="computers">
+              <Computer v-for="computer in computers" :item="computer" 
+              @click="displayInfoPc(computer)" :key="computer.id"/>
+            </div>
+           
           </div>
         </div>
         <div class="main-screen ">
           <div>
             <div class="info_pc" v-if="current_pc.ip">
               <h4>Information detail du Machine : {{ current_pc.ip }}
-                
                 Serveur No : {{ current_pc.id }}
               </h4>
             </div>
-            <div class="computer_detail">
+            <div class="computer_detail" v-if="!isLoading">
               <Ressource
               v-for="obj,i in rsrcs"
               :rsrc_name="i"
@@ -32,7 +38,6 @@
               />
             </div>
           </div>
-          
           <div class="microvms">
             <micro-vm-liste :items="microvms" @created="updateMicroVm"/>
           </div>
@@ -69,6 +74,7 @@ export default {
       selected_computer:{},
       computers:[],
       microvms:[],
+      isLoading: false,
       buttons:this.$store.state.buttons,
       msg:"",
       button_shown: false,
@@ -97,6 +103,7 @@ export default {
     },
     displayInfoPc(computer){
       this.current_pc = computer
+      this.isLoading = true;
       this.$store.state.current_pc =computer
       let url = `http://${computer.ip}:8000/micro_vms/resources_monitor/`
       let vue = this
@@ -106,6 +113,8 @@ export default {
       this.interval = setInterval(() => {
         axios.get(url).then((response) => {
           vue.rsrcs = response.data
+
+          this.isLoading = false;
         }).catch((error) => {
           console.error(error)
         })
@@ -140,6 +149,14 @@ export default {
   align-items: center;
   background-color: rgb(0, 0, 0);
   color: aliceblue;
+}
+
+.loadingComputers{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
 }
 .main-screen{
   display: flex;
@@ -233,4 +250,65 @@ img{
   height:20px;
   overflow: auto;
 }
+
+.loader {
+  width: 0;
+  height: 50px;
+  display: inline-block;
+  position: relative;
+  background: #FFF;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  box-sizing: border-box;
+  animation: animFw 8s linear infinite;
+}
+  .loader::after,
+  .loader::before {
+    content: '';
+    width: 10px;
+    height: 1px;
+    background: #FFF;
+    position: absolute;
+    top: 9px;
+    right: -2px;
+    opacity: 0;
+    transform: rotate(-45deg) translateX(0px);
+    box-sizing: border-box;
+    animation: coli1 0.3s linear infinite;
+  }
+  .loader::before {
+    top: -4px;
+    transform: rotate(45deg);
+    animation: coli2 0.3s linear infinite;
+  }
+
+@keyframes animFw {
+    0% {
+  width: 0;
+}
+    100% {
+  width: 100%;
+}
+  }
+
+@keyframes coli1 {
+    0% {
+  transform: rotate(-45deg) translateX(0px);
+  opacity: 0.7;
+}
+    100% {
+  transform: rotate(-45deg) translateX(-45px);
+  opacity: 0;
+}
+  }
+
+@keyframes coli2 {
+    0% {
+  transform: rotate(45deg) translateX(0px);
+  opacity: 1;
+}
+    100% {
+  transform: rotate(45deg) translateX(-45px);
+  opacity: 0.7;
+}
+  }
 </style>
