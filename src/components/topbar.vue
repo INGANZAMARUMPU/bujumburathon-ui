@@ -4,6 +4,7 @@
     <h1 class="title">INGANZAMARUMPU</h1>
     <div class="options">
       <h1 class="close" @click="logout">
+        <b-icon-power />
       </h1>
     </div>
   </div>
