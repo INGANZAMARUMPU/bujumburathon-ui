@@ -15,13 +15,23 @@
         </div>
       </div>
       <div class="main-screen">
-        <div class="computer_detail">
-          <Ressource
-            v-for="obj,i in rsrcs"
-            :rsrc_name="i"
-            :rsrc_obj="obj"
-          />
+        <div>
+          <div class="info_pc" v-if="current_pc.ip">
+            <h4>Information detail du Machine : {{ current_pc.ip }}
+
+              Serveur No : {{ current_pc.id }}
+            </h4>
+            </div>
+          <div class="computer_detail">
+            <Ressource
+              v-for="obj,i in rsrcs"
+              :rsrc_name="i"
+              :rsrc_obj="obj"
+              :key="obj.id"
+            />
+          </div>
         </div>
+        
         <div class="microvms">
           <micro-vm-liste :items="microvms"/>
         </div>
@@ -52,6 +62,7 @@ export default {
       rsrcs:{},
       interval:null,
       selected:{},
+      current_pc:{},
       selected_computer:{},
       computers:[],
       microvms:[],
@@ -77,6 +88,7 @@ export default {
       this.$store.state.buttons.splice(index, 1)
     },
     displayInfoPc(computer){
+      this.current_pc = computer
       let url = `http://${computer.ip}:8000/micro_vms/resources_monitor/`
       let vue = this
       if(!!this.interval){
@@ -112,7 +124,14 @@ export default {
 }
 </script>
 <style scoped>
-
+.info_pc{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 0, 0);
+  color: aliceblue;
+}
 .main-screen{
   display: flex;
   justify-content: space-between;

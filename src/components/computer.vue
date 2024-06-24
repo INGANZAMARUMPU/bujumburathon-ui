@@ -32,17 +32,5 @@ export default {
   padding: 10px;
 }
 
-.online, .offline{
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  display: inline-block;
-}
-.online{
-  background-color: #0f0;
-}
 
-.offline{
-  background-color: red;
-}
 </style>

@@ -13,6 +13,7 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Ip Adress</th>
+                    <th>Machine Host</th>
                     <th>Date de Creation</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -22,12 +23,24 @@
                 <tr v-for="item in items" :key="item.id">
                     <td>{{ item.id }}</td>
                     <td>{{ item.nom }}</td>
-                    <td>{{ item.ip }}</td>
+                  
+                    <td>
+                        <b-icon-pc-display/>
+                        {{ item.ip }}</td>
+                    <td>
+                        <b-icon-pc/>
+                        {{ item.serveur.ip }}
+                        <span v-if="item.serveur.online" class="online"></span>
+                        <span v-else class="offline"></span>
+                
+                    </td>
                     <td>
                         {{  item.date_creation}}
                     </td>
                     <td>
-                        {{ item.status == 1? "Online" : "Offline" }}
+                        <span v-if="item.serveur.online" class="online"></span>
+                        <span v-else class="offline"></span>
+                        <!-- {{ item.status == 1? "Online" : "Offline" }} -->
                     </td>
                     <td>
                         <button class="btn btn-primary" @click="startPc(item.id)">Start</button>
