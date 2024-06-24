@@ -25,7 +25,7 @@
         <div class="main-screen ">
           <div>
             <div class="info_pc" v-if="current_pc.ip">
-              <h4>Information detail du Machine : {{ current_pc.ip }}
+              <h4>Information detail de la  Machine : {{ current_pc.ip }}
                 Serveur No : {{ current_pc.id }}
               </h4>
             </div>

@@ -1,6 +1,5 @@
 <template>
     <div>
-        
         <div class="display_header">
             <h1>Micro Vm Liste</h1>
             <button @click="createMc">
