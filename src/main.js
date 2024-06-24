@@ -3,7 +3,11 @@ import App from './App.vue'
 import store from './store'
 import axios from 'axios'
 import { BootstrapIconsPlugin } from "bootstrap-icons-vue";
+import {
+  Chart as ChartJS, Tooltip, Legend, ArcElement, CategoryScale, LinearScale
+} from 'chart.js'
 
+ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, Legend)
 window.axios = axios;
 const app = createApp(App).use(store).use(BootstrapIconsPlugin)
 app.mixin({

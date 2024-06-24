@@ -16,16 +16,16 @@
       </div>
       <div class="main-screen">
         <div class="computer_detail">
-          <h1>
-            {{ selected_computer }}
-          </h1>
+          <Ressource
+            v-for="obj,i in rsrcs"
+            :rsrc_name="i"
+            :rsrc_obj="obj"
+          />
         </div>
         <div class="microvms">
           <micro-vm-liste :items="microvms"/>
         </div>
-
       </div>
-      
     </div>
     
     <DialogButton
@@ -40,12 +40,12 @@ import TopBar from '@/components/topbar.vue'
 import Computer from '@/components/computer.vue'
 import DialogButton from '@/components/dialog_button.vue'
 import MicroVmListe from '@/components/MicroVmListe.vue'
+import Ressource from '@/components/ressource.vue'
 import axios from 'axios'
 
 export default {
   components: {
-    TopBar, Computer, DialogButton,
-    MicroVmListe
+    TopBar, Computer, DialogButton, MicroVmListe, Ressource
   },
   data(){
     return {
@@ -58,7 +58,9 @@ export default {
       buttons:this.$store.state.buttons,
       msg:"",
       button_shown: false,
-      current_button: {}
+      current_button: {},
+      rsrcs:{},
+      interval:null,
     }
   },
   watch:{
@@ -67,20 +69,6 @@ export default {
     },
   },
   methods:{
-
-    fetchRsrc(url){
-      //let url = this.url+"/account/statistiques/resources_monitor/"
-      let vue = this
-      this.interval = setInterval(() => {
-          axios.get(url, this.headers)
-          .then((response) => {
-            vue.rsrcs = response.data
-          }).catch((error) => {
-            vue.errorOrRefresh(error, vue.fetchRsrc)
-          })
-        
-      }, 2000)
-    },
     editButton(button){
       this.current_button = button
       this.button_shown = true
@@ -89,21 +77,18 @@ export default {
       this.$store.state.buttons.splice(index, 1)
     },
     displayInfoPc(computer){
+      let url = `http://${computer.ip}:8000/micro_vms/resources_monitor/`
+      let vue = this
+      if(!!this.interval){
+        window.clearInterval(this.interval)
+      }
       this.interval = setInterval(() => {
-        if(this.interval != 0){
-          clearInterval(this.interval)
-          this.interval = 0;
-        }
-        // checking status of servers status
-        this.fetch_data()
-        axios.get(`http://${computer.ip}:8000/micro_vms/resources_monitor/` )
-      .then(res => {
-        console.log(res.data)
-        this.selected_computer = res.data
-      }).catch(err => {
-        console.error(err);
-      })
-      }, 3000, computer)
+        axios.get(url).then((response) => {
+          vue.rsrcs = response.data
+        }).catch((error) => {
+          console.error(error)
+        })
+      }, 2000)
     },
     fetch_data(){
       axios.get(this.url + "/serveurs/", this.headers)
@@ -139,6 +124,7 @@ export default {
 }
 .body{
   position: relative;
+  height: calc(100% - 200px);
 }
 .camera{
   background-color: #59d;
@@ -176,5 +162,9 @@ img{
   z-index: -1;
   opacity: .2;
   transform: rotate(-20deg);
+}
+.computer_detail{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
 }
 </style>
