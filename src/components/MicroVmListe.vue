@@ -53,7 +53,15 @@
                 //axios.get()
             }, 
             createMc(){
-                alert("ok");
+                const machneName = prompt("Entrez le nom de la machine");
+                if(machneName){
+                    axios.post(this.url,{} , this.header)
+                    .then(response=>{
+                        console.log(response);
+                    }).catch(error=>{
+                        console.log(error);
+                    })
+                }
             }
         }
     }
