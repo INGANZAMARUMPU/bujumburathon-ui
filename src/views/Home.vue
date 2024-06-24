@@ -10,12 +10,15 @@
           </div>
         </div>
         <div class="computers">
-          <Computer v-for="computer in computers" :item="computer"/>
+          <Computer v-for="computer in computers" :item="computer" 
+          @click="displayInfoPc(computer)" :key="computer.id"/>
         </div>
       </div>
       <div class="main-screen">
         <div class="computer_detail">
-          <h1>Bonjour</h1>
+          <h1>
+            {{ selected_computer }}
+          </h1>
         </div>
         <div class="microvms">
           <micro-vm-liste :items="microvms"/>
@@ -37,6 +40,7 @@ import TopBar from '@/components/topbar.vue'
 import Computer from '@/components/computer.vue'
 import DialogButton from '@/components/dialog_button.vue'
 import MicroVmListe from '@/components/MicroVmListe.vue'
+import axios from 'axios'
 
 export default {
   components: {
@@ -45,7 +49,10 @@ export default {
   },
   data(){
     return {
+      rsrcs:{},
+      interval:null,
       selected:{},
+      selected_computer:{},
       computers:[],
       microvms:[],
       buttons:this.$store.state.buttons,
@@ -60,12 +67,43 @@ export default {
     },
   },
   methods:{
+
+    fetchRsrc(url){
+      //let url = this.url+"/account/statistiques/resources_monitor/"
+      let vue = this
+      this.interval = setInterval(() => {
+          axios.get(url, this.headers)
+          .then((response) => {
+            vue.rsrcs = response.data
+          }).catch((error) => {
+            vue.errorOrRefresh(error, vue.fetchRsrc)
+          })
+        
+      }, 2000)
+    },
     editButton(button){
       this.current_button = button
       this.button_shown = true
     },
     deleteButton(index){
       this.$store.state.buttons.splice(index, 1)
+    },
+    displayInfoPc(computer){
+      this.interval = setInterval(() => {
+        if(this.interval != 0){
+          clearInterval(this.interval)
+          this.interval = 0;
+        }
+        // checking status of servers status
+        this.fetch_data()
+        axios.get(`http://${computer.ip}:8000/micro_vms/resources_monitor/` )
+      .then(res => {
+        console.log(res.data)
+        this.selected_computer = res.data
+      }).catch(err => {
+        console.error(err);
+      })
+      }, 3000, computer)
     },
     fetch_data(){
       axios.get(this.url + "/serveurs/", this.headers)
